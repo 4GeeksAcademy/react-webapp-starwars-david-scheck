@@ -1,42 +1,41 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			characters : []
+			favorites: [],
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			fetchCharacters: () => {
+				fetch('https://www.swapi.tech/api/people?limit=100')
+				.then((res) => res.json())
+				.then((payload) => {
+					
+					setStore({ characters: payload:})
+
+				})
+				.catch()
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
+			toggleFavorite: (id, type, name) => {
 				const store = getStore();
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
+				let filteredFavorite = false;
+
+				const newFavorites = favorites.filter((favorite) => {
+					if (favorite.id === id && favorite.type === type) {
+						return false;
+					}
+
+					return true;
 				});
 
-				//reset the global store
-				setStore({ demo: demo });
+				if(!filteredFavorite) {
+					newFavorites.push({ id, type, name});
+				}
+
+				setStore({...store, favorites: newFavorites });
+
+					}
+				}
 			}
 		}
 	};
