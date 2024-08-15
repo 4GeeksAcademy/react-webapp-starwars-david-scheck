@@ -1,22 +1,23 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-export function CharacterDetails () {
-    const { characterID } = useParams ();
-    const [characterData, setChracterData] = useState(null);
-    useEffect(() => {
-
-    }, [])};
+export function CharacterDetails() {
+    const { characterID } = useParams();
+    const [characterData, setCharacterData] = useState(null);
 
     const fetchCharacterData = () => {
-        fetch(`https://www.swapi.tech/api/people/${characterID}`
+        fetch(`https://www.swapi.tech/api/people/${characterID}`)
             .then((res) => res.json())
             .then((payload) => {
-                console.log(payload)
-                setCharacterData(payload.result.properties)
+                console.log(payload);
+                setCharacterData(payload.result.properties);
             })
-        )
-    }
+            .catch(error => console.error("Error fetching character data:", error));
+    };
+
+    useEffect(() => {
+        fetchCharacterData();
+    }, [characterID]);
 
     return (
         <div>
@@ -29,7 +30,6 @@ export function CharacterDetails () {
                     <p>Eye Color: {characterData.eye_color}</p>
                 </div>
             )}
-
         </div>
-    )
+    );
 }
