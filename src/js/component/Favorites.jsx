@@ -6,20 +6,8 @@ const Favorites = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
 
-    const handleCharacterClick = (characterUrl) => {
-        const characterId = characterUrl.split("/").slice(-2, -1)[0];
-        navigate(`/CharacterDetails/${characterId}`);
-    };
-
-    const getCharacterNameFromUrl = (url) => {
-        const urlParts = url.split("/");
-        const peopleIndex = urlParts.indexOf("people");
-        if (peopleIndex === -1) {
-            return "Unknown";
-        }
-        const characterId = urlParts[peopleIndex + 2];
-        const characterName = urlParts[peopleIndex + 3] || "Unknown";
-        return characterName;
+    const handleFavoriteClick = (name) => {
+        navigate(`/CharacterDetails/${name}`);
     };
 
     return (
@@ -28,12 +16,12 @@ const Favorites = () => {
                 Favorites({store.favorites.length})
             </button>
             <ul className="dropdown-menu dropdown-menu-end p-2 dropdown-menu-dark">
-                {store.favorites.map((item, index) => (
+                {store.favorites.map((name, index) => (
                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                        <a className="dropdown-item" href="#" onClick={() => handleCharacterClick(item)}>
-                            {getCharacterNameFromUrl(item)}
+                        <a className="dropdown-item" href="#" onClick={() => handleFavoriteClick(name)}>
+                            {name}
                         </a>
-                        <i className="fa-solid fa-trash-can" onClick={() => actions.deleteFavorite(item)}></i>
+                        <i className="fa-solid fa-trash-can" onClick={() => actions.deleteFavorite(name)}></i>
                     </li>
                 ))}
             </ul>
