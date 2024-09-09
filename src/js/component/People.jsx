@@ -7,7 +7,7 @@ import { FaHeart } from "react-icons/fa";
 const People = () => {
     const { store, actions } = useContext(Context);
     const [scrollPosition, setScrollPosition] = useState(0);
-    const [favoriteStatus, setFavoriteStatus] = useState({}); // Track favorite state for each item
+    const [favoriteStatus, setFavoriteStatus] = useState({});
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -34,9 +34,9 @@ const People = () => {
     const toggleFavorite = (uid, name) => {
         setFavoriteStatus((prevStatus) => ({
             ...prevStatus,
-            [uid]: !prevStatus[uid], // Toggle favorite status for the specific item
+            [uid]: !prevStatus[uid],
         }));
-        actions.addFavorites(name); // Call the action to handle adding to favorites
+        actions.addFavorites(name);
     };
 
     const containerStyle = {
@@ -110,7 +110,7 @@ const People = () => {
                             <p className="card-text"><b>Hair color:</b> {store.peopleCard[index]?.hair_color}</p>
                             <p className="card-text"><b>Eye color:</b> {store.peopleCard[index]?.eye_color}</p>
                             <div className="d-flex justify-content-between">
-                                <Link to={`/DetailsCharacters/${item.uid}`} className="btn btn-outline-dark fw-bold">
+                                <Link to={`/CharacterDetails/${item.uid}`} className="btn btn-outline-dark fw-bold">
                                     Learn more!
                                 </Link>
                                 <button 

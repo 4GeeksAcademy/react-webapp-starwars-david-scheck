@@ -1,4 +1,30 @@
-.logo {
-    height: 100px;
-    width: 150px;
+/* Add a cool starry background image */
+nav {
+    background-image: url('https://www.solarsystemscope.com/textures/download/2k_stars_milky_way.jpg') !important;
+    background-size: cover;
 }
+
+/* Use the iconic Star Wars font */
+nav a {
+    font-family: 'Saira Stencil One', cursive;
+    color: #FFE81F !important; /* Star Wars yellow */
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: #fff !important; 
+}
+
+.logo {
+    box-shadow: 0 0 20px rgba(51, 214, 255, 0.8); /* Neon blue glow */
+    transition: transform 0.3s;
+}
+
+.logo:hover {
+    transform: rotate(360deg) scale(1.1);
+}
+
+.logo {
+    max-height: 50px; /* Adjust this value as needed */
+    width: auto;
+  }

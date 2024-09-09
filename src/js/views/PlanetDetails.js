@@ -1,68 +1,89 @@
-import React, {useContext, useEffect} from "react";
-import { Context } from "../store/appContext";
-import { useParams } from "react-router";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-const PlanetsDetails = () => {
-    const{store, actions} = useContext(Context)
-    // console.log("I am a new planet", store.planetId);
-    const params = useParams();
-    // console.log(params);
-    
-    useEffect(()=>{
-        actions.getPlanetId(params.theid)
-    },[])
-	return (
-        <div className="py-3 px-5 w-100">
-            <div className="card p-3" style={{maxwidth: "540px"}}>
+function PlanetDetails() {
+    const [planet, setPlanet] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { id } = useParams();
+
+    useEffect(() => {
+        const fetchPlanetDetails = async () => {
+            try {
+                const response = await fetch(`https://swapi.dev/api/planets/${id}/`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch planet details');
+                }
+                const data = await response.json();
+                setPlanet(data);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+
+        fetchPlanetDetails();
+    }, [id]);
+
+    if (loading) return <div className="container mt-5"><h2>Loading...</h2></div>;
+    if (error) return <div className="container mt-5"><h2>Error: {error}</h2></div>;
+    if (!planet) return <div className="container mt-5"><h2>No planet data found</h2></div>;
+
+    return (
+        <div className="container mt-5">
+            <div className="card border-0 shadow-lg">
                 <div className="row g-0">
-                    <div className="col-md-4">
-                        <img src={`https://starwars-visualguide.com/assets/img/planets/${params.theid}.jpg`} className="img-fluid rounded" alt="..."/>
+                    <div className="col-md-6">
+                        <img src={`https://starwars-visualguide.com/assets/img/planets/${id}.jpg`}
+                            className="img-fluid rounded-start h-100 object-fit-cover"
+                            alt={planet.name}
+                            onError={(e) => { e.target.onerror = null; e.target.src = "https://starwars-visualguide.com/assets/img/placeholder.jpg" }}
+                        />
                     </div>
-                    <div className="col-md-8 ps-5 pe-4">
-                        <div className="card-body p-0">
-                            <h5 className="card-title fw-semibold mb-5 display-1">{store.planetId.properties?.name}</h5>
-                            <p className="card-text">{store.planetId.description}</p>
-                            <p>Consectetur adipisicing elit. Aliquam quae, distinctio molestiae nam iusto inventore ad maxime corrupti consequatur quos cum pariatur facere, nemo doloribus. Soluta saepe eveniet eaque facere amet dolore, inventore ipsam. Est labore veritatis laborum deleniti rerum? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae, qui eum! Quasi quo exercitationem natus tenetur perspiciatis temporibus quam amet excepturi nesciunt doloribus porro soluta, eius tempore aperiam? Error eaque nostrum quibusdam quisquam, atque animi ullam quo vel at doloribus sit sed quaerat doloremque quidem, repellat sint explicabo qui in.</p>
+                    <div className="col-md-6">
+                        <div className="card-body d-flex flex-column h-100 justify-content-center">
+                            <h1 className="card-title display-4 mb-4">{planet.name}</h1>
+                            <div className="row">
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Population</h5>
+                                    <p className="fs-4">{planet.population}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Climate</h5>
+                                    <p className="fs-4">{planet.climate}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Terrain</h5>
+                                    <p className="fs-4">{planet.terrain}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Diameter</h5>
+                                    <p className="fs-4">{planet.diameter} km</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Gravity</h5>
+                                    <p className="fs-4">{planet.gravity}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Rotation Period</h5>
+                                    <p className="fs-4">{planet.rotation_period} hours</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Orbital Period</h5>
+                                    <p className="fs-4">{planet.orbital_period} days</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Surface Water</h5>
+                                    <p className="fs-4">{planet.surface_water}%</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="row pt-2 border-top border-2 border-danger mt-3 text-center fs-5">
-                    <div className="col">
-                        <p><b>Name</b></p>
-                        <p>{store.planetId.properties?.name}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Climate</b></p>
-                        <p>{store.planetId.properties?.climate}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Population</b></p>
-                        <p>{store.planetId.properties?.population}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Orbital Period</b></p>
-                        <p>{store.planetId.properties?.orbital_period}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Rotation Period</b></p>
-                        <p>{store.planetId.properties?.rotation_period}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Diameter</b></p>
-                        <p>{store.planetId.properties?.diameter}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Terrain</b></p>
-                        <p>{store.planetId.properties?.terrain}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Surface Water</b></p>
-                        <p>{store.planetId.properties?.surface_water}</p>
-                    </div>
-                </div>
             </div>
-		</div>
-	);
-};
+        </div>
+    );
+}
 
-export default PlanetsDetails;
+export default PlanetDetails;

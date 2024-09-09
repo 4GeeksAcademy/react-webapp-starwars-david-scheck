@@ -1,0 +1,33 @@
+.card {
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}
+
+.card-title {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.text-muted {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fs-4 {
+    font-weight: 500;
+}
+
+.img-fluid {
+    transition: all 0.3s ease;
+}
+
+.img-fluid:hover {
+    transform: scale(1.05);
+}

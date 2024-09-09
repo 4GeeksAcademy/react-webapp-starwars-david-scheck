@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import { CiHeart } from "react-icons/ci"; // Import the empty heart icon
-import { FaHeart } from "react-icons/fa"; // Import the filled heart icon
+import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 
 const Planets = () => {
     const { store, actions } = useContext(Context);
     const [scrollPosition, setScrollPosition] = useState(0);
-    const [favoriteStatus, setFavoriteStatus] = useState({}); // Track favorite state for each planet
+    const [favoriteStatus, setFavoriteStatus] = useState({});
     const containerRef = useRef(null);
 
     useEffect(() => {
@@ -34,9 +34,9 @@ const Planets = () => {
     const toggleFavorite = (uid, name) => {
         setFavoriteStatus((prevStatus) => ({
             ...prevStatus,
-            [uid]: !prevStatus[uid], // Toggle favorite status for the specific planet
+            [uid]: !prevStatus[uid],
         }));
-        actions.addFavorites(name); // Call the action to handle adding to favorites
+        actions.addFavorites(name);
     };
 
     const containerStyle = {
@@ -51,9 +51,10 @@ const Planets = () => {
         width: "250px",
         margin: "0 10px",
         boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+        display: "flex",
+        flexDirection: "column",
     };
 
-    
     const imageContainerStyle = {
         width: "100%",
         height: "300px",
@@ -68,6 +69,14 @@ const Planets = () => {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
     });
+
+    const cardBodyStyle = {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "100%",
+        padding: "15px",
+    };
 
     const arrowStyle = {
         position: "absolute",
@@ -89,7 +98,6 @@ const Planets = () => {
         boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
     };
 
-
     return (
         <div style={{ position: "relative" }}>
             <button 
@@ -106,13 +114,15 @@ const Planets = () => {
                         <div style={imageContainerStyle}>
                             <div style={imageStyle(item.uid)}></div>
                         </div>
-                        <div className="card-body text-start">
-                            <h5 className="card-title text-center fw-bold fs-4">{item.name}</h5>
-                            <p className="card-text"><b>Population:</b> {store.planetsCard[index]?.population}</p>
-                            <p className="card-text"><b>Terrain:</b> {store.planetsCard[index]?.terrain}</p>
-                            <p className="card-text"><b>Gravity:</b> {store.planetsCard[index]?.gravity}</p>
-                            <div className="d-flex justify-content-between">
-                                <Link to={`/DetailsPlanets/${item.uid}`} className="btn btn-outline-dark fw-bold">
+                        <div className="card-body text-start" style={cardBodyStyle}>
+                            <div>
+                                <h5 className="card-title text-center fw-bold fs-4">{item.name}</h5>
+                                <p className="card-text"><b>Population:</b> {store.planetsCard[index]?.population}</p>
+                                <p className="card-text"><b>Terrain:</b> {store.planetsCard[index]?.terrain}</p>
+                                <p className="card-text"><b>Gravity:</b> {store.planetsCard[index]?.gravity}</p>
+                            </div>
+                            <div className="d-flex justify-content-between mt-auto">
+                                <Link to={`/PlanetDetails/${item.uid}`} className="btn btn-outline-dark fw-bold">
                                     Learn more!
                                 </Link>
                                 <button 

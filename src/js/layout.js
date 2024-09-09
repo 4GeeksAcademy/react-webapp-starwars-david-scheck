@@ -17,9 +17,14 @@ const Layout = () => {
 				<Navbar />
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="/CharactersDetails/:theid" element={<CharacterDetails />} />
-					<Route path="/PlanetDetails/:theid" element={<PlanetDetails />} />
-					<Route path="/VehiclesDetails/:theid" element={<VehicleDetails />} />
+					<Route path="/CharacterDetails/:id" element={
+						<React.Fragment>
+							{console.log("Rendering CharacterDetails")}
+							<CharacterDetails />
+						</React.Fragment>
+					} />
+					<Route path="/PlanetDetails/:id" element={<PlanetDetails />} />
+					<Route path="/VehicleDetails/:id" element={<VehicleDetails />} />
 					<Route path="*" element={<h1>Not found!</h1>} />
 				</Routes>
 			</BrowserRouter>

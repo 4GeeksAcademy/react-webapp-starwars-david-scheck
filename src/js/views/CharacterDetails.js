@@ -1,61 +1,85 @@
-import React, { useContext, useEffect } from "react";
-import { Context } from "../store/appContext";
-import { useParams } from "react-router";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import './CharacterDetails.css';
 
-const CharacterDetails = () => {
-    const { store, actions } = useContext(Context)
-    console.log("I am a new person", store.characterId);
-
-    const params = useParams();
-    // console.log(params);
+function CharacterDetails() {
+    const [character, setCharacter] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { id } = useParams();
 
     useEffect(() => {
-        actions.getCharacterId(params.theid)
-    }, [])
+        const fetchCharacterDetails = async () => {
+            try {
+                const response = await fetch(`https://swapi.dev/api/people/${id}/`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch character details');
+                }
+                const data = await response.json();
+                setCharacter(data);
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+
+        fetchCharacterDetails();
+    }, [id]);
+
+    if (loading) return <div className="container mt-5"><h2>Loading...</h2></div>;
+    if (error) return <div className="container mt-5"><h2>Error: {error}</h2></div>;
+    if (!character) return <div className="container mt-5"><h2>No character data found</h2></div>;
+
     return (
-        <div className="py-3 px-5 w-100">
-            <div className="card p-3" style={{ maxwidth: "540px" }}>
+        <div className="container mt-5">
+            <div className="card border-0 shadow-lg">
                 <div className="row g-0">
-                    <div className="col-md-4">
-                        <img src={`https://starwars-visualguide.com/assets/img/characters/${params.theid}.jpg`} className="img-fluid rounded" alt="..." />
+                    <div className="col-md-6">
+                        <img src={`https://starwars-visualguide.com/assets/img/characters/${id}.jpg`}
+                            className="img-fluid rounded-start h-100 object-fit-cover"
+                            alt={character.name}
+                            onError={(e) => { e.target.onerror = null; e.target.src = "https://starwars-visualguide.com/assets/img/placeholder.jpg" }} />
                     </div>
-                    <div className="col-md-8 ps-5 pe-4">
-                        <div className="card-body p-0">
-                            <h5 className="card-title fw-semibold mb-5 display-1">{store.characterId.properties?.name}</h5>
-                            <p className="card-text">{store.characterId.description}</p>
-                            <p>Consectetur adipisicing elit. Aliquam quae, distinctio molestiae nam iusto inventore ad maxime corrupti consequatur quos cum pariatur facere, nemo doloribus. Soluta saepe eveniet eaque facere amet dolore, inventore ipsam. Est labore veritatis laborum deleniti rerum? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae, qui eum! Quasi quo exercitationem natus tenetur perspiciatis temporibus quam amet excepturi nesciunt doloribus porro soluta, eius tempore aperiam? Error eaque nostrum quibusdam quisquam, atque animi ullam quo vel at doloribus sit sed quaerat doloremque quidem, repellat sint explicabo qui in.</p>
+                    <div className="col-md-6">
+                        <div className="card-body d-flex flex-column h-100 justify-content-center">
+                            <h1 className="card-title display-4 mb-4">{character.name}</h1>
+                            <div className="row">
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Height</h5>
+                                    <p className="fs-4">{character.height} cm</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Mass</h5>
+                                    <p className="fs-4">{character.mass} kg</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Hair Color</h5>
+                                    <p className="fs-4">{character.hair_color}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Skin Color</h5>
+                                    <p className="fs-4">{character.skin_color}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Eye Color</h5>
+                                    <p className="fs-4">{character.eye_color}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Birth Year</h5>
+                                    <p className="fs-4">{character.birth_year}</p>
+                                </div>
+                                <div className="col-6 mb-3">
+                                    <h5 className="text-muted">Gender</h5>
+                                    <p className="fs-4">{character.gender}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="row pt-2 border-top border-2 border-danger mt-3 text-center fs-5">
-                    <div className="col">
-                        <p><b>Name</b></p>
-                        <p>{store.characterId.properties?.name}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Birth Year</b></p>
-                        <p>{store.characterId.properties?.birth_year}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Gender</b></p>
-                        <p>{store.characterId.properties?.gender}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Height</b></p>
-                        <p>{store.characterId.properties?.height}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Skin Color</b></p>
-                        <p>{store.characterId.properties?.skin_color}</p>
-                    </div>
-                    <div className="col">
-                        <p><b>Eye Color</b></p>
-                        <p>{store.characterId.properties?.eye_color}</p>
                     </div>
                 </div>
             </div>
         </div>
     );
-};
+}
 
 export default CharacterDetails;
