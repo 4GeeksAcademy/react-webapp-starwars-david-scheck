@@ -123,26 +123,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 				actions.getVehiclesCard();
 			},
 
-			addFavorites: (name) => {
+			addFavorites: (name, type, uid) => {
 				const store = getStore();
-				const isFavorite = store.favorites.includes(name);
+				const isFavorite = store.favorites.some(item => item.name === name);
 
 				if (isFavorite) {
 					// If the item is already in favorites, remove it
 					setStore({
-						favorites: store.favorites.filter(item => item !== name)
+						favorites: store.favorites.filter(item => item.name !== name)
 					});
 				} else {
 					// If the item is not in favorites, add it
 					setStore({
-						favorites: [...store.favorites, name]
+						favorites: [...store.favorites, { name, type, uid }]
 					});
 				}
 			},
 
 			deleteFavorite: (name) => {
 				const store = getStore();
-				let newFavorites = store.favorites.filter(item => item !== name);
+				let newFavorites = store.favorites.filter(item => item.name !== name);
 				setStore({ favorites: newFavorites });
 			},
 		}

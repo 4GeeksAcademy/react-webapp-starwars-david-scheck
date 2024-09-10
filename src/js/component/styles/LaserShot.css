@@ -1,0 +1,28 @@
+@keyframes shoot {
+    0% {
+        width: 0;
+        opacity: 1;
+    }
+    100% {
+        width: 100vw;
+        opacity: 0;
+    }
+}
+
+.laser-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.laser {
+    position: absolute;
+    height: 2px;
+    background-color: #ff0000;
+    transform-origin: left center;
+    animation: shoot 1s linear forwards;
+}

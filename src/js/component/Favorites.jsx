@@ -6,8 +6,20 @@ const Favorites = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
 
-    const handleFavoriteClick = (name) => {
-        navigate(`/CharacterDetails/${name}`);
+    const handleFavoriteClick = (item) => {
+        switch (item.type) {
+            case 'character':
+                navigate(`/character/${item.uid}`);
+                break;
+            case 'planet':
+                navigate(`/planet/${item.uid}`);
+                break;
+            case 'vehicle':
+                navigate(`/vehicle/${item.uid}`);
+                break;
+            default:
+                console.error('Unknown item type:', item.type);
+        }
     };
 
     return (
@@ -16,12 +28,12 @@ const Favorites = () => {
                 Favorites({store.favorites.length})
             </button>
             <ul className="dropdown-menu dropdown-menu-end p-2 dropdown-menu-dark">
-                {store.favorites.map((name, index) => (
+                {store.favorites.map((item, index) => (
                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                        <a className="dropdown-item" href="#" onClick={() => handleFavoriteClick(name)}>
-                            {name}
+                        <a className="dropdown-item" href="#" onClick={() => handleFavoriteClick(item)}>
+                            {item.name}
                         </a>
-                        <i className="fa-solid fa-trash-can" onClick={() => actions.deleteFavorite(name)}></i>
+                        <i className="fa-solid fa-trash-can" onClick={() => actions.deleteFavorite(item.name)}></i>
                     </li>
                 ))}
             </ul>

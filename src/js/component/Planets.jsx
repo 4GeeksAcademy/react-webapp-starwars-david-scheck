@@ -36,7 +36,7 @@ const Planets = () => {
             ...prevStatus,
             [uid]: !prevStatus[uid],
         }));
-        actions.addFavorites(name);
+        actions.addFavorites(name, 'planet', uid);
     };
 
     const containerStyle = {
@@ -122,7 +122,7 @@ const Planets = () => {
                                 <p className="card-text"><b>Gravity:</b> {store.planetsCard[index]?.gravity}</p>
                             </div>
                             <div className="d-flex justify-content-between mt-auto">
-                                <Link to={`/PlanetDetails/${item.uid}`} className="btn btn-outline-dark fw-bold">
+                                <Link to={`/planet/${item.uid}`} className="btn btn-outline-dark fw-bold">
                                     Learn more!
                                 </Link>
                                 <button 

@@ -37,7 +37,7 @@ const Vehicles = () => {
             ...prevStatus,
             [uid]: !prevStatus[uid],
         }));
-        actions.addFavorites(name);
+        actions.addFavorites(name, 'vehicle', uid);
     };
 
     const containerStyle = {
@@ -111,7 +111,7 @@ const Vehicles = () => {
                             <p className="card-text"><b>Manufacturer:</b> {store.vehiclesCard[index]?.manufacturer}</p>
                             <p className="card-text"><b>Cost in Credits:</b> {store.vehiclesCard[index]?.cost_in_credits}</p>
                             <div className="d-flex justify-content-between">
-                                <Link to={`/VehicleDetails/${item.uid}`} className="btn btn-outline-dark fw-bold">
+                                <Link to={`/vehicle/${item.uid}`} className="btn btn-outline-dark fw-bold">
                                     Learn more!
                                 </Link>
                                 <button 

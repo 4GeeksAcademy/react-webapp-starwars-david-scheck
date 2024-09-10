@@ -36,7 +36,7 @@ const People = () => {
             ...prevStatus,
             [uid]: !prevStatus[uid],
         }));
-        actions.addFavorites(name);
+        actions.addFavorites(name, 'character', uid);
     };
 
     const containerStyle = {
@@ -110,7 +110,7 @@ const People = () => {
                             <p className="card-text"><b>Hair color:</b> {store.peopleCard[index]?.hair_color}</p>
                             <p className="card-text"><b>Eye color:</b> {store.peopleCard[index]?.eye_color}</p>
                             <div className="d-flex justify-content-between">
-                                <Link to={`/CharacterDetails/${item.uid}`} className="btn btn-outline-dark fw-bold">
+                                <Link to={`/character/${item.uid}`} className="btn btn-outline-dark fw-bold">
                                     Learn more!
                                 </Link>
                                 <button 
